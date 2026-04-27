@@ -1,44 +1,24 @@
-const dropZone = document.getElementById('drop-zone');
-const fileInput = document.getElementById('videoInput');
+function showTab(tabId) {
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(tabId).classList.add('active');
+    event.currentTarget.classList.add('active');
+}
 
-dropZone.onclick = () => fileInput.click();
-
-async function handleUpload() {
-    const file = fileInput.files[0];
-    if(!file) return alert("Select a file!");
-
-    const formData = new FormData();
-    formData.append('video', file);
-
-    document.getElementById('senderLoader').style.display = 'block';
-    document.getElementById('senderMsg').innerText = "Watermarking & Encrypting...";
-
-    const res = await fetch('/sender_upload', { method: 'POST', body: formData });
+async function handleReceive() {
+    const msg = document.getElementById('receiveStat');
+    msg.innerText = "Connecting to Vault...";
+    
+    const res = await fetch('/run_receiver_task', { method: 'POST' });
     const data = await res.json();
     
-    document.getElementById('senderLoader').style.display = 'none';
-    document.getElementById('senderMsg').innerText = `Success! ${data.parts} secure parts in vault.`;
-}
-
-async function scanLink() {
-    const url = document.getElementById('susLink').value;
-    if(!url) return;
-
-    const res = await fetch('/scan_link', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({ url: url })
-    });
-    const data = await res.json();
-
-    if(data.found) {
-        const table = document.getElementById('pirateTable');
-        const row = table.insertRow(0);
-        row.style.background = "#450a0a";
-        row.innerHTML = `<td style="color:#f87171;">🚩 PIRACY DETECTED</td><td>${data.url}</td><td>${data.ip}</td>`;
-        alert("Invisible Watermark Detected on Remote Site!");
+    if(data.status === "Success") {
+        msg.innerText = `✅ Received & Decrypted ${data.decrypted_count} chunks.`;
+        const player = document.getElementById('mainPlayer');
+        player.load(); // Refresh the video source
+        player.play();
+    } else {
+        msg.innerText = "📭 Vault Empty or Error.";
     }
 }
-
-// Allow Enter Key
-document.getElementById('susLink').addEventListener('keypress', (e) => { if(e.key === 'Enter') scanLink(); });
+// ... keep your sender_upload and scanLink functions ...
