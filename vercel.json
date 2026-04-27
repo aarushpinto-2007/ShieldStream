@@ -7,7 +7,7 @@
     }
   ],
   "functions": {
-    "app.py": {
+    "**/*.py": {
       "maxDuration": 60,
       "memory": 1024
     }
