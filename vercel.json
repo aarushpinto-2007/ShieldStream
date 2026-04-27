@@ -1,13 +1,13 @@
 {
   "version": 2,
-  "routes": [
+  "rewrites": [
     {
-      "src": "/(.*)",
-      "dest": "app.py"
+      "source": "/(.*)",
+      "dest": "/api/app.py"
     }
   ],
   "functions": {
-    "**/*.py": {
+    "api/app.py": {
       "maxDuration": 60,
       "memory": 1024
     }
