@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShieldStream | Secure Transmission</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>🛡️ ShieldStream</h1>
+        <p class="subtitle">Secure Live Segmented Transmission</p>
+
+        <section class="card">
+            <h2>Broadcaster (Sender)</h2>
+            <div id="drop-zone" class="drop-zone">
+                <span>Drag & Drop Match Video</span>
+                <input type="file" id="videoInput" hidden>
+            </div>
+            <button onclick="handleUpload()" class="btn-primary">Encrypt & Send</button>
+            <div id="senderLoader" class="loader"></div>
+            <p id="senderMsg"></p>
+        </section>
+
+        <section class="card">
+            <h2>🕵️ AI Anti-Piracy Scanner</h2>
+            <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                <input type="text" id="susLink" placeholder="Enter suspicious link..." style="flex:1; padding:10px; border-radius:5px;">
+                <button onclick="scanLink()" class="btn-primary" style="width:80px;">Scan</button>
+            </div>
+            <div id="pirateResults">
+                <table style="width:100%; font-size: 0.8em; color: #cbd5e1;">
+                    <thead>
+                        <tr style="border-bottom: 1px solid #475569;">
+                            <th>Status</th>
+                            <th>Target URL</th>
+                            <th>Server IP</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pirateTable"></tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
